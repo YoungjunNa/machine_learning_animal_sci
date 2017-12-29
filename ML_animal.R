@@ -1,11 +1,20 @@
+library(dplyr)
+
 #setting dataframe
-df <- read.csv("hanwoo2.txt")
+df <- read.csv("hanwoo2.txt",fileEncoding = "EUC-KR")
+df <- filter(df, is.na(windex)==FALSE)
+
+#normalize
+normalize <- function(x){
+  return((x-min(x))/(max(x)-min(x)))
+}
 
 df_norm <- as.data.frame(lapply(df1, normalize))
 summary(df_norm$windex)
 
+#set 분리
 df_train <- df[1:8000,]
-df_test <- df[8001:10921,]
+df_test <- df[8001:10920,]
 
 #Java setting for mac
 dyn.load('/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home/lib/server/libjvm.dylib')
@@ -14,11 +23,6 @@ library(RWeka)
 library(neuralnet)
 
 #Neuralnet ####
-#normalize
-normalize <- function(x){
-  return((x-min(x))/(max(x)-min(x)))
-}
-
 df_model <- neuralnet(windex ~ pen_size_animal + month + BW + backfat_thick + eye_rib + carcass_weight + marbling , data=df_train)
 plot(df_model)
 
