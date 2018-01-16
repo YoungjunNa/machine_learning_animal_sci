@@ -3,6 +3,8 @@ pacman::p_load("tidyverse","RWeka","neuralnet","kernlab","caret")
 #setting dataframe
 df <- read.csv("hanwoo2.txt",fileEncoding = "EUC-KR")
 df1 <- filter(df, is.na(windex)==FALSE)
+df1 <- df1[,c("windex","month","weight","등심단면적","근내지방")]
+
 
 #normalize
 normalize <- function(x){
@@ -10,31 +12,31 @@ normalize <- function(x){
 }
 
 df_norm <- as.data.frame(lapply(df1, normalize))
-summary(df_norm$육량지수)
+summary(df_norm$windex)
 
 #set 분리
-df_train <- df[1:8000,]
-df_test <- df[8001:10920,]
+df_train <- df1[1:8000,]
+df_test <- df1[8001:10920,]
 
-#Java setting for mac
+# Java setting for mac
 dyn.load('/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home/lib/server/libjvm.dylib')
 
-#Neuralnet ####
-df_model <- neuralnet(windex ~ pen_size_animal + month + BW + backfat_thick + eye_rib + carcass_weight + marbling , data=df_train)
+# Neuralnet ####
+df_model <- neuralnet(windex ~ month + weight + 등심단면적 + 근내지방, data=df_train)
 plot(df_model)
 
-df_model12 <- neuralnet(windex ~ pen_size_animal + month + BW + backfat_thick + eye_rib + carcass_weight + marbling , data=df_train, hidden = 5)
+df_model12 <- neuralnet(windex ~ month + weight + 등심단면적 + 근내지방, data=df_train, hidden = 5)
 plot(df_model12)
 
-df_result <- compute(df_model12, df_test[,-7])
+df_result <- compute(df_model12, df_test)
 predicted_windex <- df_result$net.result
 cor(predicted_windex, df_test$windex)[,1]
 
-#단순 다항 회귀식과 비교
+# 단순 다항 회귀식과 비교
 reg1 <- lm(windex ~ ., data=df_train)
 summary(reg1)
 
-#SVM
+# SVM
 # begin by training a simple linear SVM
 
 grade_classifier <- ksvm(gradeNm ~ 등지방 + 등심단면적 + 도체중 + 육량지수 + 근내지방 + month, data = df_train,
