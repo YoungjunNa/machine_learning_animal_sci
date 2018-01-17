@@ -7,7 +7,7 @@ df <- filter(df, is.na(windex)==FALSE)
 # df1 <- df1[,c("windex","month","weight","등심단면적","근내지방")]
 
 df1 <- df[,c(1:9,14,15,11)]
-df1$SexNm <- ifelse(df1$SexNm=="거세",1,0)
+df1$SexNm <- ifelse(df1$SexNm=="거세",1,0) #dummy coding
 
 str(df1)
 
