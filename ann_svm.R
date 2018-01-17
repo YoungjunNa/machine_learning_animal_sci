@@ -23,7 +23,7 @@ summary(df_norm$month)
 
 # set 분리
 df_train <- df_norm[1:8000,]
-df_test <- df_morn[8001:10920,]
+df_test <- df_norm[8001:10920,]
 
 # Java setting for mac
 dyn.load('/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home/lib/server/libjvm.dylib')
@@ -32,7 +32,7 @@ dyn.load('/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home/lib/serv
 # df_model <- neuralnet(windex ~ backfat + rib_area + carcass_weight + marbling + SexNm, data=df_train)
 # plot(df_model)
 
-df_model2 <- neuralnet(windex ~ backfat + rib_area + carcass_weight + marbling + SexNm, data=df_train, hidden = 2)
+df_model2 <- neuralnet(windex ~ backfat + rib_area + carcass_weight + marbling + SexNm, data=df_train, hidden = 3)
 plot(df_model2)
 
 df_result <- compute(df_model2, df_test[c("backfat","rib_area","carcass_weight","marbling","SexNm")])
