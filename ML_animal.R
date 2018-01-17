@@ -25,10 +25,10 @@ dyn.load('/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home/lib/serv
 df_model <- neuralnet(windex ~ month + weight + 등심단면적 + 근내지방, data=df_train)
 plot(df_model)
 
-df_model12 <- neuralnet(windex ~ month + weight + 등심단면적 + 근내지방, data=df_train, hidden = 5)
-plot(df_model12)
+df_model2 <- neuralnet(windex ~ month + weight + 등심단면적 + 근내지방, data=df_train, hidden = 5)
+plot(df_model2)
 
-df_result <- compute(df_model12, df_test)
+df_result <- compute(df_model2, df_test[,-1])
 predicted_windex <- df_result$net.result
 cor(predicted_windex, df_test$windex)[,1]
 
