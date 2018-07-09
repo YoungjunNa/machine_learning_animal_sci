@@ -7,6 +7,8 @@ df <- read.csv("hanwoo2.txt",fileEncoding = "EUC-KR")
 df <- filter(df, is.na(windex)==FALSE)
 df <- filter(df, SexNm=="거세")
 
+df %>% ggvis(~month,~weight) %>% layer_points(size=0.1)
+
 # average
 average <- data.frame(등지방=round(mean(df$등지방),0),등심단면적=round(mean(df$등심단면적),0),도체중=round(mean(df$도체중),0),근내지방=round(mean(df$근내지방),0))
 
